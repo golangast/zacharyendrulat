@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 
+	Con "github.com/golangast/zacharyendrulat/go/Context"
+	P "github.com/golangast/zacharyendrulat/go/Post"
 	"github.com/rs/cors"
 )
 
@@ -23,7 +25,7 @@ func main() {
 
 	fmt.Println("starting server......")
 	mux := http.NewServeMux()
-	mux.HandleFunc("/post")
+	mux.HandleFunc("/post", P.GoPosts)
 	// mux.HandleFunc("/get")
 	mux.HandleFunc("/home", Gohome)
 
