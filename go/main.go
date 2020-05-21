@@ -23,7 +23,7 @@ func main() {
 
 	fmt.Println("starting server......")
 	mux := http.NewServeMux()
-	// mux.HandleFunc("/post")
+	mux.HandleFunc("/post")
 	// mux.HandleFunc("/get")
 	mux.HandleFunc("/home", Gohome)
 
