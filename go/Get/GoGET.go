@@ -27,6 +27,7 @@ func GoGET(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8081/post")
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000/show")
+	w.Header().Set("Access-Control-Allow-Origin", "http://1299991b.ngrok.io/get")
 
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", allowedHeaders)
@@ -39,7 +40,7 @@ func GoGET(w http.ResponseWriter, r *http.Request) {
 		for k, v := range r.URL.Query() {
 			fmt.Printf("%s: %s\n", k, v)
 		}
-		w.Write([]byte("Received a GET request\n"))
+
 		fmt.Println("reqeusted boyd ", r.Body)
 		w.WriteHeader(http.StatusOK)
 

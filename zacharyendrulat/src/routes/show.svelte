@@ -1,6 +1,6 @@
 <script>
 	import Apis, {actualapi, getResult} from "./getapi.svelte";
-	let actualtt = getResult("http://localhost:8081/get");
+	let actualtt = getResult("http://1299991b.ngrok.io/get");
 	let ff = [];
 	var promise = Promise.resolve(actualtt).then(function(val) { 
 			console.log(val); 
@@ -8,10 +8,8 @@
 	});  
 </script>
 
-{#each ff as {ID, Title, Slug}, i }
+{#each ff as {Dates, Title, Slug, Html}, i }
  <ul>
- <li>{i}: {ID[0]} {Title[0]} {Slug[0]}</li>
+ <li>{i}: {Dates} {Title} {Slug} {Html}</li>
  </ul>
-
  {/each}
-
