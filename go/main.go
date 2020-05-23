@@ -3,21 +3,14 @@ package main
 import (
 	"context"
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 
 	Con "github.com/golangast/zacharyendrulat/go/Context"
+	GET "github.com/golangast/zacharyendrulat/go/GET"
 	P "github.com/golangast/zacharyendrulat/go/Post"
 	"github.com/rs/cors"
 )
-
-//used to get template stuff
-var tpl *template.Template
-
-func init() {
-	tpl = template.Must(template.ParseGlob("templates/*"))
-}
 
 var err error
 
@@ -26,8 +19,7 @@ func main() {
 	fmt.Println("starting server......")
 	mux := http.NewServeMux()
 	mux.HandleFunc("/post", P.GoPosts)
-	// mux.HandleFunc("/get")
-	mux.HandleFunc("/home", Gohome)
+	mux.HandleFunc("/get", GET.GoGET)
 
 	//used to get other files css/js
 	fs := http.FileServer(http.Dir("static/"))
@@ -37,30 +29,5 @@ func main() {
 	handler := cors.Default().Handler(mux)
 	c := context.Background()
 	log.Fatal(http.ListenAndServe(":8081", Con.AddContext(c, handler)))
-
-}
-
-//template to get file
-func Gohome(w http.ResponseWriter, r *http.Request) {
-
-	//switch statement for get or post
-	switch r.Method {
-
-	case "GET":
-		//go get html file
-		err := tpl.ExecuteTemplate(w, "index.html", nil)
-		if err != nil {
-			log.Fatalln("template didn't execute: ", err)
-		}
-
-	case "POST":
-		//go get html file
-		err := tpl.ExecuteTemplate(w, "index.html", nil)
-		if err != nil {
-			log.Fatalln("template didn't execute: ", err)
-		}
-	default:
-		fmt.Fprintf(w, "Sorry, only GET and POST methods are supported.")
-	}
 
 }
