@@ -11,8 +11,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func UnmarshalLogin(data []byte) (Postcms, error) {
-	var r Postcms
+func UnmarshalLogin(data []byte) (Post, error) {
+	var r Post
 	fmt.Print("starting unmarshal")
 	err := json.Unmarshal(data, &r)
 	fmt.Print("is starting", data)
@@ -20,12 +20,12 @@ func UnmarshalLogin(data []byte) (Postcms, error) {
 	return r, err
 }
 
-func (r *Postcms) Marshal() ([]byte, error) {
+func (r *Post) Marshal() ([]byte, error) {
 	return json.Marshal(r)
 }
 
-type Postcms struct {
-	Date  string `json:"date"`
+type Post struct {
+	Dates string `json:"dates"`
 	Title string `json:"title"`
 	Slug  string `json:"slug"`
 	Html  string `json:"html"`
@@ -52,7 +52,7 @@ func GoPosts(w http.ResponseWriter, r *http.Request) {
 		for k, v := range r.URL.Query() {
 			fmt.Printf("%s: %s\n", k, v)
 		}
-		w.Write([]byte("Received a GET request\n"))
+		w.Write([]byte("Received a POST request\n"))
 		fmt.Println("reqeusted boyd ", r.Body)
 		w.WriteHeader(http.StatusOK)
 
@@ -77,7 +77,7 @@ func GoPosts(w http.ResponseWriter, r *http.Request) {
 
 		//database beginsssssss
 
-		db, err := sql.Open("mysql", "root:@/users")
+		db, err := sql.Open("mysql", "root:@/phpmyadmin")
 		if err != nil {
 			fmt.Println(err)
 		} else {
@@ -92,13 +92,13 @@ func GoPosts(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("ping ")
 		}
 		// query
-		stmt, err := db.Prepare("INSERT INTO post(date, title, slug, html) VALUES(?, ?, ?, ?)")
+		stmt, err := db.Prepare("INSERT INTO phpmyadmin.post(dates, title, slug, html) VALUES(?, ?, ?, ?)")
 		if err != nil {
 			log.Fatal(err)
 		}
-		userstemp := Postcms{Date: l.Date, Title: l.Title, Slug: l.Slug, Html: l.Html}
+		userstemp := Post{Dates: l.Dates, Title: l.Title, Slug: l.Slug, Html: l.Html}
 		fmt.Println(userstemp)
-		res, err := stmt.Exec(userstemp.Date, userstemp.Title, userstemp.Slug, userstemp.Html)
+		res, err := stmt.Exec(userstemp.Dates, userstemp.Title, userstemp.Slug, userstemp.Html)
 		if err != nil {
 			log.Fatal(err)
 		}

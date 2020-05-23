@@ -2,7 +2,7 @@
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   let data = {
-    date: "",
+    dates: "",
     title: "",
     slug: "",
     html:""
@@ -10,7 +10,7 @@
   const baseUrl = "http://localhost:8081/post";
   let addNewPost = async () => {
     if (
-      data.date.trim() === "" ||
+      data.dates.trim() === "" ||
       data.title.trim() === "" ||
       data.slug.trim() === "" ||
       data.html.trim() === ""
@@ -37,13 +37,13 @@
         <div class="card p-3">
           <form on:submit|preventDefault={addNewPost}>
             <div class="form-group">
-              <label for="date">date</label>
+              <label for="dates">dates</label>
               <input
-                bind:value={data.date}
+                bind:value={data.dates}
                 type="text"
                 class="form-control"
                 id="text"
-                placeholder="date" />
+                placeholder="dates" />
             </div>
             <div class="form-group">
               <label for="title">title</label>

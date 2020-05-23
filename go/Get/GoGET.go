@@ -4,34 +4,20 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func UnmarshalLogin(data []byte) (Postcms, error) {
-	var r Postcms
-	fmt.Print("starting unmarshal")
-	err := json.Unmarshal(data, &r)
-	fmt.Print("is starting", data)
-
-	return r, err
+type Post struct {
+	ID    int    `json:"ID"`
+	Date  string `json:"Dates"`
+	Title string `json:"Title"`
+	Slug  string `json:"Slug"`
+	Html  string `json:"Html"`
 }
 
-func (r *Postcms) Marshal() ([]byte, error) {
-	return json.Marshal(r)
-}
-
-type Postcms struct {
-	Date  string `json:"date"`
-	Title string `json:"title"`
-	Slug  string `json:"slug"`
-	Html  string `json:"html"`
-}
-
-func GoPosts(w http.ResponseWriter, r *http.Request) {
+func GoGET(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(w.Header())
 	fmt.Println("started")
@@ -40,6 +26,7 @@ func GoPosts(w http.ResponseWriter, r *http.Request) {
 	allowedHeaders := "Accept, Content-Type, Content-Length, Accept-Encoding, Authorization,X-CSRF-Token"
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8081/post")
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000/show")
 
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", allowedHeaders)
@@ -56,28 +43,11 @@ func GoPosts(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("reqeusted boyd ", r.Body)
 		w.WriteHeader(http.StatusOK)
 
-	case "POST":
-		fmt.Println(r.Header.Get("Origin"))
-
-		r.Body = http.MaxBytesReader(w, r.Body, 1048576)
-		reqBody, err := ioutil.ReadAll(r.Body)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		fmt.Printf("%s\n", reqBody)
-		w.Write([]byte("Received a POST request\n"))
-		fmt.Println("reqeusted boyd ", r.Body)
-		l, err := UnmarshalLogin(reqBody)
-		if err != nil {
-			log.Fatal(err)
-		}
-
 		fmt.Println("opening database")
 
 		//database beginsssssss
 
-		db, err := sql.Open("mysql", "root:@/users")
+		db, err := sql.Open("mysql", "root:@/phpmyadmin")
 		if err != nil {
 			fmt.Println(err)
 		} else {
@@ -103,7 +73,7 @@ func GoPosts(w http.ResponseWriter, r *http.Request) {
 		var post []Post
 
 		// query
-		rows, err := db.Query("select * from post")
+		rows, err := db.Query("select * from phpmyadmin.post")
 		for rows.Next() {
 			err := rows.Scan(&id, &date, &title, &slug, &html)
 			if err != nil {
@@ -113,7 +83,7 @@ func GoPosts(w http.ResponseWriter, r *http.Request) {
 				fmt.Println("scan ", i)
 			}
 
-			post = append(post, Post{ID: id, Date: date, Title: title})
+			post = append(post, Post{ID: id, Date: date, Title: title, Slug: slug, Html: html})
 			fmt.Println("before marshal ", post)
 
 		}

@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	Con "github.com/golangast/zacharyendrulat/go/Context"
-	GET "github.com/golangast/zacharyendrulat/go/GET"
+	GET "github.com/golangast/zacharyendrulat/go/Get"
 	P "github.com/golangast/zacharyendrulat/go/Post"
 	"github.com/rs/cors"
 )

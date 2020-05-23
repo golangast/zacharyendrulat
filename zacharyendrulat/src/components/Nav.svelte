@@ -64,5 +64,6 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#52141f",endCo
 		<li><a rel=prefetch aria-current='{segment === "blog" ? "page" : undefined}' href='blog'>blog</a></li>
 		<li><a rel=prefetch aria-current='{segment === "go" ? "page" : undefined}' href='go'>Go</a></li>
 		<li><a rel=prefetch aria-current='{segment === "editor" ? "page" : undefined}' href='editor'>Editor</a></li>
+		<li><a rel=prefetch aria-current='{segment === "show" ? "page" : undefined}' href='show'>Show</a></li>
 	</ul>
 </nav>
