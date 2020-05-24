@@ -8,6 +8,14 @@
 
 <script>
 	export let posts;
+
+	import Apis, {actualapi, getResult} from "../getapi.svelte";
+	let actualtt = getResult("http://12fe748d.ngrok.io/get");
+	let ff = [];
+	var promise = Promise.resolve(actualtt).then(function(val) { 
+			console.log(val); 
+		ff = val;
+	});  
 </script>
 
 <style>
@@ -29,6 +37,13 @@
 				tell Sapper to load the data for the page as soon as
 				the user hovers over the link or taps it, instead of
 				waiting for the 'click' event -->
+
 		<li><a rel='prefetch' href='blog/{post.slug}'>{post.title}</a></li>
 	{/each}
 </ul>
+
+{#each ff as {Dates, Title, Slug, Html} }
+ <ul>
+		<li><a rel='prefetch' href='blog/{Slug}'>{Dates} {Title}</a></li>
+ </ul>
+ {/each}

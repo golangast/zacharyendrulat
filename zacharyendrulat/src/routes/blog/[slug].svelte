@@ -15,6 +15,15 @@
 
 <script>
 	export let post;
+
+
+		import Apis, {actualapi, getResult} from "../getapi.svelte";
+	let actualtt = getResult("http://12fe748d.ngrok.io/get");
+	let ff = [];
+	var promise = Promise.resolve(actualtt).then(function(val) { 
+			console.log(val); 
+		ff = val;
+	});  
 </script>
 
 <style>
@@ -57,8 +66,19 @@
 	<title>{post.title}</title>
 </svelte:head>
 
-<h1>{post.date} {post.title}</h1>
+
+{#each ff as {Dates, Title, Slug, Html}, i }
+
+<h1>{Dates} {Title}</h1>
 
 <div class='content'>
-	{@html post.html}
+	{@html Html}
 </div>
+ {/each}
+
+
+
+
+
+
+

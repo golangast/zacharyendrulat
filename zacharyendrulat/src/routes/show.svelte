@@ -1,6 +1,6 @@
 <script>
 	import Apis, {actualapi, getResult} from "./getapi.svelte";
-	let actualtt = getResult("http://1299991b.ngrok.io/get");
+	let actualtt = getResult("http://12fe748d.ngrok.io/get");
 	let ff = [];
 	var promise = Promise.resolve(actualtt).then(function(val) { 
 			console.log(val); 
